@@ -96,6 +96,19 @@ mynetworks = <%= @main_mynetworks_real %>
 # myorigin = $myhostname
 myorigin = <%= @main_myorigin_real %>
 
+<% if @always_add_missing_headers_real -%>
+always_add_missing_headers = <%= @always_add_missing_headers_real %>
+<% end -%>
+<% if @local_header_rewrite_clients -%>
+local_header_rewrite_clients = <%= @local_header_rewrite_clients %>
+<% end -%>
+<% if @sender_canonical_maps_pcre_file -%>
+sender_canonical_maps = pcre:<%= @sender_canonical_maps_pcre_file %>
+<% end -%>
+<% if @smtp_header_checks_pcre_file -%>
+smtp_header_checks = pcre:<%= @smtp_header_checks_pcre_file %>
+<% end -%>
+
 # queue_directory = /var/spool/postfix
 queue_directory = <%= @main_queue_directory_real %>
 

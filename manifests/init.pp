@@ -39,6 +39,10 @@ class postfix (
   $main_smtpd_tls_security_level      = undef,
   $main_smtpd_tls_key_file            = undef,
   $main_smtpd_tls_cert_file           = undef,
+  $local_header_rewrite_clients       = undef,
+  $always_add_missing_headers         = undef,
+  $smtp_header_checks_pcre_file       = undef,
+  $sender_canonical_maps_pcre_file    = undef,
   $packages                           = 'USE_DEFAULTS',
   $service_enable                     = true,
   $service_ensure                     = 'running',
@@ -160,6 +164,7 @@ class postfix (
   $main_alias_database_real        = $main_alias_database
   $main_alias_maps_real            = $main_alias_maps
   $main_append_dot_mydomain_real   = $main_append_dot_mydomain
+  $always_add_missing_headers_real = $always_add_missing_headers
   $main_biff_real                  = $main_biff
   $main_inet_interfaces_real       = $main_inet_interfaces
   $main_inet_protocols_real        = $main_inet_protocols
@@ -209,6 +214,7 @@ class postfix (
   if empty($main_alias_maps_real) == true { fail("main_alias_maps must contain a valid value and is set to <${main_alias_maps_real}>") }
   validate_string($main_alias_maps_real)
   validate_re($main_append_dot_mydomain_real, '^(yes|no)$', "main_append_dot_mydomain may be either 'yes' or 'no' and is set to <${main_append_dot_mydomain_real}>") #lint:ignore:140chars
+  validate_re($always_add_missing_headers_real, '^(yes|no)$', "always_add_missing_headers may be either 'yes' or 'no' and is set to <${always_add_missing_headers_real}>") #lint:ignore:140chars
   validate_re($main_biff_real, '^(yes|no)$', "main_biff may be either 'yes' or 'no' and is set to <${main_biff_real}>")
   validate_absolute_path($main_command_directory_real)
   validate_absolute_path($main_daemon_directory_real)
@@ -265,8 +271,11 @@ class postfix (
   validate_string($main_smtpd_tls_mandatory_protocols)
   validate_string($main_smtpd_tls_protocols)
   validate_string($main_smtpd_tls_security_level)
+  if $local_header_rewrite_clients != undef { validate_string($local_header_rewrite_clients) }
   if $main_smtpd_tls_key_file != undef { validate_absolute_path($main_smtpd_tls_key_file) }
   if $main_smtpd_tls_cert_file != undef { validate_absolute_path($main_smtpd_tls_cert_file) }
+  if $sender_canonical_maps_file != undef { validate_absolute_path($sender_canonical_maps_pcre_file) }
+  if $smtp_header_checks_pcre_file != undef { validate_absolute_path($smtp_header_checks_pcre_file) }
   if $main_smtpd_helo_required != undef { validate_re($main_smtpd_helo_required, '^(yes|no)$', "main_smtpd_helo_required may be either 'yes' or 'no' and is set to <${main_smtpd_helo_required}>") } #lint:ignore:140chars
   if $main_smtpd_helo_restrictions != undef { validate_array($main_smtpd_helo_restrictions) }
   if $main_smtpd_recipient_restrictions != undef { validate_array($main_smtpd_recipient_restrictions) }
