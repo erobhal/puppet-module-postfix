@@ -108,7 +108,6 @@ sender_canonical_maps = pcre:<%= @sender_canonical_maps_pcre_file %>
 <% if @smtp_header_checks_pcre_file -%>
 smtp_header_checks = pcre:<%= @smtp_header_checks_pcre_file %>
 <% end -%>
-
 # queue_directory = /var/spool/postfix
 queue_directory = <%= @main_queue_directory_real %>
 
